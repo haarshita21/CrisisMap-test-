@@ -9,80 +9,178 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  perspective: 1600px;
 }
 
-/* 3D Container Transform */
+/* ===========================
+   MAP CONTAINER
+=========================== */
+
 .map-3d-container {
-  width: 80%;
-  height: 80vh;
-  border-radius: 20px;
+  width: 78%;
+  height: 72vh;
+  margin-top: 20px;
+
+  border-radius: 24px;
   overflow: hidden;
-  border: 1px solid rgba(0, 255, 204, 0.3);
-  box-shadow: 0 0 50px rgba(0, 255, 204, 0.1);
+
+  border: 1px solid rgba(0,255,204,0.22);
+
+  background: #05050A;
+
+  box-shadow:
+    0 0 60px rgba(0,255,204,0.08),
+    0 25px 80px rgba(0,0,0,0.55);
+
   position: relative;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+
+  transition:
+    transform 0.85s cubic-bezier(0.25,1,0.5,1),
+    box-shadow 0.8s ease;
+
+  transform-style: preserve-3d;
+  transform-origin: center center;
+
+  will-change: transform;
+
+  z-index: 5;
 }
+
+/* ===========================
+   3D MODE
+=========================== */
 
 .map-3d-active {
-  transform: perspective(1200px) rotateX(45deg) scale(1.4) translateY(-10%);
-  border-radius: 20px;
-  box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 50px rgba(233, 69, 96, 0.2);
+  transform:
+    perspective(1400px)
+    rotateX(28deg)
+    scale(1.03);
+
+  box-shadow:
+    0 45px 90px rgba(0,0,0,0.75),
+    0 0 70px rgba(233,69,96,0.18);
 }
 
-/* HUD Overlay Elements */
-.hud-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* ===========================
+   LEAFLET FIXES
+=========================== */
+
+.leaflet-container {
   width: 100%;
   height: 100%;
+  background: #05050A;
+  transform: translateZ(0);
+}
+
+.leaflet-pane {
+  z-index: 200;
+}
+
+.leaflet-control-container {
+  z-index: 600;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 700;
+}
+
+/* ===========================
+   HUD OVERLAY
+=========================== */
+
+.hud-overlay {
+  position: absolute;
+  inset: 0;
+
   pointer-events: none;
   z-index: 1000;
-  background: 
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  background-size: 100% 4px, 3px 100%;
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+
+  background:
+    linear-gradient(
+      rgba(18,16,16,0) 50%,
+      rgba(0,0,0,0.22) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,0,0,0.04),
+      rgba(0,255,0,0.015),
+      rgba(0,0,255,0.04)
+    );
+
+  background-size:
+    100% 4px,
+    3px 100%;
+
+  box-shadow:
+    inset 0 0 120px rgba(0,0,0,0.85);
 }
+
+/* ===========================
+   HUD PANELS
+=========================== */
 
 .hud-panel {
   position: absolute;
-  background: rgba(5, 5, 10, 0.7);
-  border: 1px solid rgba(0, 255, 204, 0.2);
-  backdrop-filter: blur(10px);
+
+  background: rgba(6, 8, 15, 0.72);
+
+  border: 1px solid rgba(0,255,204,0.18);
+
+  backdrop-filter: blur(14px);
+
   padding: 1rem;
-  border-radius: 8px;
+
+  border-radius: 12px;
+
   pointer-events: auto;
+
+  box-shadow:
+    0 0 25px rgba(0,0,0,0.4);
 }
 
+/* TOP LEFT */
 .hud-top-left {
-  top: 80px;
-  left: 20px;
+  top: 40px;
+  left: 30px;
+
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
+
   border-left: 3px solid #00ffcc;
 }
 
+/* TOP RIGHT */
 .hud-top-right {
-  top: 80px;
-  right: 20px;
-  border-right: 3px solid #e94560;
+  top: 40px;
+  right: 30px;
+
   text-align: right;
+
+  border-right: 3px solid #e94560;
 }
 
+/* BOTTOM LEFT */
 .hud-bottom-left {
-  bottom: 20px;
-  left: 20px;
+  bottom: 30px;
+  left: 30px;
+
   border-bottom: 3px solid #f39c12;
 }
 
+/* BOTTOM RIGHT */
 .hud-bottom-right {
-  bottom: 20px;
-  right: 20px;
+  bottom: 30px;
+  right: 30px;
+
   display: flex;
   gap: 1rem;
 }
+
+/* ===========================
+   HUD TEXT
+=========================== */
 
 .hud-title {
   font-size: 0.7rem;
@@ -93,36 +191,50 @@
 }
 
 .hud-value {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 1px;
 }
 
 .hud-text-danger {
   color: #e94560;
-  text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+  text-shadow: 0 0 12px rgba(233,69,96,0.45);
 }
 
 .hud-text-safe {
   color: #00ffcc;
-  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+  text-shadow: 0 0 12px rgba(0,255,204,0.45);
 }
 
+/* ===========================
+   BUTTONS
+=========================== */
+
 .hud-btn {
-  background: rgba(0, 255, 204, 0.1);
-  border: 1px solid rgba(0, 255, 204, 0.3);
+  background: rgba(0,255,204,0.08);
+
+  border: 1px solid rgba(0,255,204,0.25);
+
   color: #00ffcc;
-  padding: 0.5rem 1rem;
+
+  padding: 0.65rem 1rem;
+
   cursor: pointer;
+
   text-transform: uppercase;
+
   letter-spacing: 1px;
+
   font-size: 0.8rem;
-  transition: all 0.2s;
+
+  transition: all 0.2s ease;
 }
 
 .hud-btn:hover {
-  background: rgba(0, 255, 204, 0.3);
-  box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+  background: rgba(0,255,204,0.22);
+
+  box-shadow:
+    0 0 18px rgba(0,255,204,0.28);
 }
 
 .hud-btn.active {
@@ -130,22 +242,31 @@
   color: #05050A;
 }
 
-/* Crosshair center */
+/* ===========================
+   CROSSHAIR
+=========================== */
+
 .crosshair {
   position: absolute;
+
   top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
+
   width: 40px;
   height: 40px;
+
   pointer-events: none;
-  z-index: 1000;
+
+  z-index: 1002;
 }
 
-.crosshair::before, .crosshair::after {
+.crosshair::before,
+.crosshair::after {
   content: "";
   position: absolute;
-  background: rgba(0, 255, 204, 0.5);
+  background: rgba(0,255,204,0.5);
 }
 
 .crosshair::before {
@@ -162,30 +283,99 @@
   width: 1px;
 }
 
+/* ===========================
+   STATUS BLINKER
+=========================== */
+
 .hud-blinker {
   display: inline-block;
+
   width: 8px;
   height: 8px;
+
   background: #e94560;
+
   border-radius: 50%;
+
   margin-right: 8px;
-  box-shadow: 0 0 8px #e94560;
+
+  box-shadow: 0 0 10px #e94560;
+
   animation: blink 1s infinite alternate;
 }
 
 @keyframes blink {
-  0% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
-/* Override leaflet popup for dark mode */
+/* ===========================
+   LEAFLET POPUP DARK
+=========================== */
+
 .leaflet-popup-content-wrapper {
-  background: rgba(15, 15, 26, 0.95) !important;
+  background: rgba(15,15,26,0.96) !important;
+
   color: white !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255,255,255,0.08) !important;
+
+  backdrop-filter: blur(12px);
+
+  border-radius: 12px;
 }
 
 .leaflet-popup-tip {
-  background: rgba(15, 15, 26, 0.95) !important;
+  background: rgba(15,15,26,0.96) !important;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1000px) {
+
+  .map-3d-container {
+    width: 94%;
+    height: 74vh;
+  }
+
+  .hud-panel {
+    transform: scale(0.92);
+  }
+
+  .hud-top-left,
+  .hud-top-right {
+    top: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+
+  .map-3d-container {
+    width: 96%;
+    height: 70vh;
+  }
+
+  .hud-panel {
+    padding: 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .hud-bottom-left,
+  .hud-bottom-right {
+    bottom: 15px;
+  }
+
+  .map-3d-active {
+    transform:
+      perspective(1200px)
+      rotateX(18deg)
+      scale(1.02);
+  }
 }
